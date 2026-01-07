@@ -1,11 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { searchVideos, VideoResult } from '@/lib/youtube';
 import VideoCard from '@/components/VideoCard';
 import Link from 'next/link';
 
-export default function SearchPage() {
+function SearchPageContent() {
     const searchParams = useSearchParams();
     const query = searchParams.get('q');
     const [results, setResults] = useState<VideoResult[]>([]);
@@ -42,5 +42,13 @@ export default function SearchPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={<div>Searching...</div>}>
+            <SearchPageContent />
+        </Suspense>
     );
 }

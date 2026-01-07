@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import SubtitleDisplay, { Subtitle } from '@/components/SubtitleDisplay';
 import Parser from 'srt-parser-2';
@@ -21,7 +21,7 @@ const defaultLrc = `[00:01.00]歡迎來到 Karaoke Plus!
 // Default Subtitles parsed from LRC
 const defaultSubtitles: Subtitle[] = parseLrc(defaultLrc);
 
-export default function WatchPage() {
+function WatchPageContent() {
     const searchParams = useSearchParams();
     const urlVideoId = searchParams.get('v');
     const defaultVideoId = "Bbp9ZaJD_eA"; // Default Video
@@ -174,5 +174,13 @@ export default function WatchPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function WatchPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <WatchPageContent />
+        </Suspense>
     );
 }
